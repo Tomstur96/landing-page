@@ -1,0 +1,16 @@
+@use "../abstracts/" as *;
+
+.image {
+  border-radius: size(10);
+
+  &--hero {
+    width: 500px;
+    height: 550px;
+    object-fit: cover;
+
+    @include mq(75rem, $type: max) {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}

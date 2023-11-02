@@ -1,0 +1,17 @@
+$ff-sans: "Manrope", sans-serif;
+$ff-serif: "Roboto", serif;
+
+$ff-base: $ff-sans;
+$ff-accent: $ff-serif;
+
+$font-sizes: (
+  900: clamp(2.5rem, 0.5rem + 10vw, 5rem),
+  800: clamp(2.25rem, 0.5rem + 5vw, 3rem),
+  700: clamp(1.5rem, 0.5rem + 3vw, 1.6875rem),
+  600: 1.3125rem,
+  500: 1.125rem,
+  400: 1rem,
+);
+
+$fw-400: 400;
+$fw-700: 700;

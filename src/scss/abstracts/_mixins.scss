@@ -1,0 +1,75 @@
+@use "sass:meta";
+@use "sass:math";
+@use "sass:map";
+@use "breakpoints" as *;
+
+// @mixin mq($size) {
+//   @if map.has-key($breakpoints, $size) {
+//     $breakpoint: map-get($breakpoints, $size);
+//     @media screen and (min-width: $breakpoint) {
+//       @content;
+//     }
+//   } @else if meta.type-of($size) == number {
+//     @if math.is-unitless($size) {
+//       @error 'when using a number with @mq() make sure to include a unit';
+//     } @else {
+//       @media screen and (min-width: $size) {
+//         @content;
+//       }
+//     }
+//   } @else {
+//     @error 'the keyword #{$size} is not in the $breakpoints map';
+//   }
+// }
+
+@mixin mq($size, $second-size: null, $type: min) {
+  @if $type != "min" and $type != "max" and $type != "between" {
+    @error 'Invalid type for the mixin. Accepted types are "min", "max", or "between"';
+  }
+
+  @if $type == "between" and $second-size == null {
+    @error 'You need to specify a second size when using "between" type';
+  }
+
+  @if map.has-key($breakpoints, $size) {
+    $breakpoint: map-get($breakpoints, $size);
+
+    @if $type == "min" {
+      @media screen and (min-width: $breakpoint) {
+        @content;
+      }
+    } @else if $type == "max" {
+      @media screen and (max-width: $breakpoint) {
+        @content;
+      }
+    } @else if $type == "between" {
+      $second-breakpoint: map-get($breakpoints, $second-size);
+      @media screen and (min-width: $breakpoint) and (max-width: $second-breakpoint) {
+        @content;
+      }
+    }
+  } @else if meta.type-of($size) == number {
+    @if math.is-unitless($size) {
+      @error 'When using a number with @mq() make sure to include a unit';
+    } @else {
+      @if $type == "min" {
+        @media screen and (min-width: $size) {
+          @content;
+        }
+      } @else if $type == "max" {
+        @media screen and (max-width: $size) {
+          @content;
+        }
+      } @else if $type == "between" {
+        @if math.is-unitless($second-size) or $second-size == null {
+          @error 'You must specify a second size with a unit when using "between"';
+        }
+        @media screen and (min-width: $size) and (max-width: $second-size) {
+          @content;
+        }
+      }
+    }
+  } @else {
+    @error 'The keyword #{$size} is not in the $breakpoints map';
+  }
+}
